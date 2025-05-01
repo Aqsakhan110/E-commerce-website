@@ -2,5 +2,9 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "emailjs-com": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.3"
   }
 }
