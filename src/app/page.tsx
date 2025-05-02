@@ -1,18 +1,12 @@
-// app/page.js
+// app/page.jsimport Chatbot from "./components/Chatbot";
 
-// import ChatBot from './components/Chatbot';
 import HeroSection from './components/HeroSection';
-import Navbar from './components/Navbar'; 
-import Footer from './components/Footer';
-
 export default function Home() {
   return (
-    <>
-<Navbar/>
+    <> 
+    {/* <Chatbot /> */}
+
       <HeroSection />
-      {/* <ChatBot/> */}
-      
-      
       {/* Featured Categories Section (Optional) */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -62,15 +56,7 @@ export default function Home() {
       </section>
 
       {/* CTA Banner (Optional) */}
-      <section className="py-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Special Discount for New Customers</h2>
-          <p className="text-xl mb-6 text-white/90">Use code WELCOME15 for 15% off your first purchase</p>
-          <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors">
-            Shop Now
-          </button>
-        </div>
-      </section>
+    
     </>
   );
 }
