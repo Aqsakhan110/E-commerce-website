@@ -1,4 +1,3 @@
-// pages/about.tsx
 "use client";
 import React from 'react';
 import Head from 'next/head';
@@ -17,7 +16,7 @@ const About = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Hero Section - Now Dark Blue */}
+      {/* Hero Section */}
       <motion.div
         className="relative text-center text-white py-20 mb-12 bg-blue-900"
         initial={{ opacity: 0, y: -50 }}
@@ -32,7 +31,7 @@ const About = () => {
         </div>
       </motion.div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-800">
         {/* Our Story Section */}
         <motion.section
           className="mb-16"
@@ -40,7 +39,7 @@ const About = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Who We Are</h2>
+          <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Who We Are</h2>
           <div className="flex flex-wrap gap-8 items-center">
             <div className="flex-1 min-w-[300px]">
               <p className="mb-4">
@@ -67,39 +66,27 @@ const About = () => {
           </div>
         </motion.section>
 
-        {/* Our Values Section - from LEFT */}
+        {/* Our Values Section */}
         <motion.section
           className="mb-16"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Our Values</h2>
+          <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Our Values</h2>
           <div className="flex flex-wrap justify-center gap-8 mt-8">
             {[
-              {
-                icon: '✨',
-                title: 'Quality',
-                desc: 'We never compromise on quality...'
-              },
-              {
-                icon: '👥',
-                title: 'Customer First',
-                desc: 'Your satisfaction is our priority...'
-              },
-              {
-                icon: '🌱',
-                title: 'Sustainability',
-                desc: 'We are dedicated to reducing our environmental impact...'
-              }
+              { icon: '✨', title: 'Quality', desc: 'We never compromise on quality...' },
+              { icon: '👥', title: 'Customer First', desc: 'Your satisfaction is our priority...' },
+              { icon: '🌱', title: 'Sustainability', desc: 'We are dedicated to reducing our environmental impact...' }
             ].map((value, i) => (
               <motion.div
                 key={i}
-                className="flex-1 min-w-[250px] max-w-[350px] p-8 bg-blue-50 rounded-lg text-center shadow-md cursor-pointer"
+                className="flex-1 min-w-[250px] max-w-[350px] p-8 bg-blue-50 rounded-lg text-center shadow-md cursor-pointer text-gray-800"
                 whileHover={{ scale: 1.05, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="text-4xl mb-4 text-blue-500">{value.icon}</div>
+                <div className="text-4xl mb-4 text-blue-600">{value.icon}</div>
                 <h3 className="text-xl font-bold mb-2">{value.title}</h3>
                 <p>{value.desc}</p>
               </motion.div>
@@ -107,15 +94,15 @@ const About = () => {
           </div>
         </motion.section>
 
-        {/* Meet Our Team Section - from RIGHT */}
+        {/* Meet Our Team Section */}
         <motion.section
           className="mb-16"
           initial={{ opacity: 0, x: 100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Meet Our Team</h2>
-          <div className="flex flex-wrap justify-center gap-8">
+          <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Meet Our Team</h2>
+          <div className="flex flex-wrap justify-center gap-8 text-gray-800">
             {[
               { name: 'Inayatullah Samoo', role: 'Founder & CEO', img: '/team/ceo.jpg' },
               { name: 'Shehneela Khadim', role: 'Chief Technology Officer', img: '/team/cto.jpg' },
@@ -130,22 +117,22 @@ const About = () => {
                 <div className="relative w-[200px] h-[200px] mx-auto mb-4 rounded-full overflow-hidden border-4 border-blue-100">
                   <Image src={member.img} alt={member.name} fill className="object-cover" />
                 </div>
-                <h3 className="text-xl font-bold text-blue-600">{member.name}</h3>
+                <h3 className="text-xl font-bold text-blue-700">{member.name}</h3>
                 <p>{member.role}</p>
               </motion.div>
             ))}
           </div>
         </motion.section>
 
-        {/* Contact Section - from LEFT */}
+        {/* Contact Section */}
         <motion.section
           className="mb-16"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Get In Touch</h2>
-          <div className="flex flex-wrap gap-8">
+          <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Get In Touch</h2>
+          <div className="flex flex-wrap gap-8 text-gray-800">
             {[
               {
                 icon: '📍',
@@ -169,7 +156,7 @@ const About = () => {
                 whileHover={{ scale: 1.05, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="text-3xl mb-4 text-blue-500">{item.icon}</div>
+                <div className="text-3xl mb-4 text-blue-600">{item.icon}</div>
                 <h3 className="text-xl font-bold mb-2">{item.title}</h3>
                 {item.lines.map((line, j) => (
                   <p key={j}>{line}</p>

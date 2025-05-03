@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from '../context/ThemeContext'
 import Navbar from './components/Navbar';
 import Footer from "./components/Footer";
+import Chatbot from "./components/Navbar"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="pt-12">
           {children}
         </main>
-        
+        <Chatbot/>
         <Footer/>
       </body>
     </html>
