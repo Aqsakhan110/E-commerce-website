@@ -1,261 +1,291 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
-import { Search, ShoppingCart, User, Menu, X, Heart } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import Link from 'next/link';
 
-const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const [cartCount, setCartCount] = useState<number>(0);
-  const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState<boolean>(false);
-  const [isCategoriesDropdownOpen, setIsCategoriesDropdownOpen] = useState<boolean>(false);
-  const [hasMounted, setHasMounted] = useState<boolean>(false);
+export default function Navbar() {
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [showFirst, setShowFirst] = useState(true);
 
-  // Handle scroll effect for navbar
+  // Banner animation ke liye interval
   useEffect(() => {
-    const handleScroll = (): void => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const interval = setInterval(() => {
+      setShowFirst((prev) => !prev);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Set mounted to true after component has mounted
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  // Menu items
+  const menuItems = [
+    { label: "HOME", link: "/" },
+    { label: "NEW ARRIVALS", link: "/new-arrivals" },
+    { label: "WOMEN", link: "/women" },
+    { label: "MEN", link: "/men" },
+    { label: "BOYS & GIRLS", link: "/boys-girls" },
+    { label: "FRAGRANCES", link: "/fragrances" },
+    { label: "ELECTRONICS", link: "/electronics" },
+    { label: "MAKEUP", link: "/makeup" },
+    { label: "SKINCARE", link: "/skincare" },
+    { label: "ABOUT", link: "/about" },
+    { label: "CONTACT US", link: "/contact" },
+  ];
 
-  // Toggle mobile menu
-  const toggleMenu = useCallback(() => {
-    setIsMenuOpen((prevState) => !prevState);
-  }, []);
-
-  // Toggle dropdowns
-  const toggleProductsDropdown = useCallback(() => {
-    setIsProductsDropdownOpen((prevState) => !prevState);
-    if (!isProductsDropdownOpen) setIsCategoriesDropdownOpen(false);
-  }, [isProductsDropdownOpen]);
-
-  const toggleCategoriesDropdown = useCallback(() => {
-    setIsCategoriesDropdownOpen((prevState) => !prevState);
-    if (!isCategoriesDropdownOpen) setIsProductsDropdownOpen(false);
-  }, [isCategoriesDropdownOpen]);
-
-  // Close dropdowns if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (!target.closest(".dropdown")) {
-        setIsProductsDropdownOpen(false);
-        setIsCategoriesDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  // Dropdown categories ke items ke saath URLs
+  const dropdownCategories: Record<string, any> = {
+    "NEW ARRIVALS": {
+      Women: [
+        { name: "Stitched Collection", link: "/new-arrivals/women/stitched-collection" },
+        { name: "Kurti Collection", link: "/new-arrivals/women/kurti-collection" },
+        { name: "Unstitched Collection", link: "/new-arrivals/women/unstitched-collection" },
+        { name: "Bottomwear Collection", link: "/new-arrivals/women/bottomwear" },
+      ],
+      Men: [
+        { name: "Kameez Shalwar", link: "/new-arrivals/men/kameez-shalwar" },
+        { name: "Kurta", link: "/new-arrivals/men/kurta" },
+        { name: "Waistcoat", link: "/new-arrivals/men/waistcoat" },
+      ],
+      "Boys & Girls": [
+        { name: "Teen Girls", link: "/new-arrivals/boys-girls/teen-girls" },
+        { name: "Teen Boys", link: "/new-arrivals/boys-girls/teen-boys" },
+        { name: "Kid Girls", link: "/new-arrivals/boys-girls/kid-girls" },
+        { name: "Kid Boys", link: "/new-arrivals/boys-girls/kid-boys" },
+        { name: "Infant Girls", link: "/new-arrivals/boys-girls/infant-girls" },
+        { name: "Infant Boys", link: "/new-arrivals/boys-girls/infant-boys" },
+      ],
+      Electronics: [
+        { name: "Headphones", link: "/new-arrivals/electronics/headphones" },
+        { name: "Smartphones", link: "/new-arrivals/electronics/smartphones" },
+        { name: "Laptops", link: "/new-arrivals/electronics/laptops" },
+      ],
+      Makeup: [
+        { name: "Lipstick", link: "/new-arrivals/makeup/lipstick" },
+        { name: "Foundation", link: "/new-arrivals/makeup/foundation" },
+        { name: "Eyeshadow", link: "/new-arrivals/makeup/eyeshadow" },
+      ],
+    },
+    WOMEN: {
+      Clothing: [
+        { name: "Sarees", link: "/women/clothing/sarees" },
+        { name: "Kurtas", link: "/women/clothing/kurtas" },
+        { name: "Dresses", link: "/women/clothing/dresses" },
+        { name: "Lehengas", link: "/women/clothing/lehengas" },
+      ],
+      Accessories: [
+        { name: "Handbags", link: "/women/accessories/handbags" },
+        { name: "Jewelry", link: "/women/accessories/jewelry" },
+        { name: "Scarves", link: "/women/accessories/scarves" },
+      ],
+    },
+    MEN: {
+      Clothing: [
+        { name: "Shirts", link: "/men/clothing/shirts" },
+        { name: "Trousers", link: "/men/clothing/trousers" },
+        { name: "Jackets", link: "/men/clothing/jackets" },
+        { name: "Kurta Pajama", link: "/men/clothing/kurta-pajama" },
+      ],
+      Accessories: [
+        { name: "Watches", link: "/men/accessories/watches" },
+        { name: "Wallets", link: "/men/accessories/wallets" },
+        { name: "Shoes", link: "/men/accessories/shoes" },
+      ],
+    },
+    "BOYS & GIRLS": {
+      Kids: [
+        { name: "Teen Girls", link: "/boys-girls/kids/teen-girls" },
+        { name: "Teen Boys", link: "/boys-girls/kids/teen-boys" },
+        { name: "Kid Girls", link: "/boys-girls/kids/kid-girls" },
+        { name: "Kid Boys", link: "/boys-girls/kids/kid-boys" },
+        { name: "Infants", link: "/boys-girls/kids/infants" },
+      ],
+    },
+    FRAGRANCES: {
+      Types: [
+        { name: "Perfume", link: "/fragrances/perfume" },
+        { name: "Attars", link: "/fragrances/attars" },
+        { name: "Body Spray", link: "/fragrances/body-spray" },
+        { name: "Gift Sets", link: "/fragrances/gift-sets" },
+      ],
+    },
+    ELECTRONICS: {
+      Devices: [
+        { name: "Mobiles", link: "/electronics/mobiles" },
+        { name: "Laptops", link: "/electronics/laptops" },
+        { name: "Smartwatches", link: "/electronics/smartwatches" },
+        { name: "Headphones", link: "/electronics/headphones" },
+      ],
+    },
+    MAKEUP: {
+      Products: [
+        { name: "Lipstick", link: "/makeup/lipstick" },
+        { name: "Foundation", link: "/makeup/foundation" },
+        { name: "Blush", link: "/makeup/blush" },
+        { name: "Highlighter", link: "/makeup/highlighter" },
+        { name: "Concealer", link: "/makeup/concealer" },
+      ],
+    },
+    SKINCARE: {
+      Products: [
+        { name: "Moisturizers", link: "/skincare/moisturizer" },
+        { name: "Serums", link: "/skincare/serum" },
+        { name: "Cleansers", link: "/skincare/cleanser" },
+        { name: "Sunscreens", link: "/skincare/sunscreen" },
+      ],
+    },
+  };
 
   return (
-    <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md py-2" : "bg-white/90 py-4"
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-gray-800">
-            GiggleMart
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-600 hover:text-gray-900 font-medium">
-              Home
-            </Link>
-
-            {/* Products Dropdown */}
-            <div className="relative dropdown">
-              <button
-                onClick={toggleProductsDropdown}
-                className="text-gray-600 hover:text-gray-900 font-medium flex items-center"
-                aria-expanded={isProductsDropdownOpen ? "true" : "false"}
-                aria-haspopup="true"
-              >
-                Products
-                <svg
-                  className={`ml-1 h-4 w-4 transition-transform ${isProductsDropdownOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {isProductsDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-100">
-                  <Link href="/products/new-arrivals" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    New Arrivals
-                  </Link>
-                  <Link href="/products/bestsellers" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Bestsellers
-                  </Link>
-                  <Link href="/products/featured" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Featured Products
-                  </Link>
-                  <Link href="/products/sale" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Sale Items
-                  </Link>
-                  <Link href="/products/all" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 font-medium">
-                    View All Products
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Categories Dropdown */}
-            <div className="relative dropdown">
-              <button
-                onClick={toggleCategoriesDropdown}
-                className="text-gray-600 hover:text-gray-900 font-medium flex items-center"
-                aria-expanded={isCategoriesDropdownOpen ? "true" : "false"}
-                aria-haspopup="true"
-              >
-                Categories
-                <svg
-                  className={`ml-1 h-4 w-4 transition-transform ${isCategoriesDropdownOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {isCategoriesDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-100">
-                  <Link href="/categories/electronics" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Electronics
-                  </Link>
-                  <Link href="/categories/fashion" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Fashion
-                  </Link>
-                  <Link href="/categories/home-decor" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Home & Decor
-                  </Link>
-                  <Link href="/categories/beauty" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Beauty & Personal Care
-                  </Link>
-                  <Link href="/categories/sports" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                    Sports & Outdoors
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            <Link href="/deals" className="text-gray-600 hover:text-gray-900 font-medium">
-              Deals
-            </Link>
-            <Link href="/about" className="text-gray-600 hover:text-gray-900 font-medium">
-              About
-            </Link>
-            <Link href="/contact" className="text-gray-600 hover:text-gray-900 font-medium">
-              Contact Us
-            </Link>
-          </nav>
-
-          {/* Search, Cart, User Icons */}
-          <div className="hidden md:flex items-center space-x-6">
-            {/* Search */}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            </div>
-
-            {/* Wishlist */}
-            <Link href="/wishlist" className="text-gray-600 hover:text-gray-900 relative">
-              <Heart className="h-6 w-6" />
-            </Link>
-
-            {/* Cart */}
-            <Link href="/cart" className="text-gray-600 hover:text-gray-900 relative">
-              <ShoppingCart className="h-6 w-6" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-
-            {/* User */}
-            <Link href="/account" className="text-gray-600 hover:text-gray-900">
-              <User className="h-6 w-6" />
-            </Link>
+    <div className="w-full">
+      {/* Banner */}
+      <div
+        className="fixed top-0 w-full z-50 h-10 flex items-center justify-center overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, #00aaff, #003366)",
+        }}
+      >
+        {showFirst ? (
+          <div className="text-white font-semibold animate-slideInLeft whitespace-nowrap">
+            Mid Season Sale Up To 40% Off
           </div>
-
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-gray-500" onClick={toggleMenu}>
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && hasMounted && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="flex justify-between items-center mb-4">
-              <div className="relative flex-1 mr-2">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none"
-                />
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-              </div>
-            </div>
-            <nav>
-              <Link href="/" className="block py-2 text-gray-600 hover:bg-blue-50">
-                Home
-              </Link>
-              <Link href="/products" className="block py-2 text-gray-600 hover:bg-blue-50">
-                Products
-              </Link>
-              <Link href="/categories" className="block py-2 text-gray-600 hover:bg-blue-50">
-                Categories
-              </Link>
-              <Link href="/deals" className="block py-2 text-gray-600 hover:bg-blue-50">
-                Deals
-              </Link>
-              <Link href="/about" className="block py-2 text-gray-600 hover:bg-blue-50">
-                About
-              </Link>
-              <Link href="/contact" className="block py-2 text-gray-600 hover:bg-blue-50">
-                Contact Us
-              </Link>
-              <Link href="/wishlist" className="block py-2 text-gray-600 hover:bg-blue-50">
-                Wishlist
-              </Link>
-              <Link href="/cart" className="block py-2 text-gray-600 hover:bg-blue-50">
-                Cart
-              </Link>
-            </nav>
+        ) : (
+          <div className="text-white font-semibold animate-slideInRight whitespace-nowrap">
+            PKR 199 Shipping Charges & PKR 1 POS Charges are available on all orders
           </div>
         )}
       </div>
-    </header>
-  );
-};
 
-export default Navbar;
+      {/* Spacer */}
+      <div style={{ height: "40px" }}></div>
+
+      {/* Logo, Search, Icons */}
+      <div className="w-full bg-white py-3 px-4 flex flex-wrap items-center justify-between shadow-md">
+        {/* Logo */}
+        <div className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-900 tracking-wide">
+          GIGGLE MART
+        </div>
+
+        {/* Search */}
+        <div className="flex-1 max-w-md mx-4 relative">
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <i className="fas fa-search text-black text-sm"></i>
+          </div>
+          <input
+            type="text"
+            placeholder="Search for products"
+            className="w-full px-10 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            style={{
+              color: "#1f2937",
+              caretColor: "#1f2937",
+            }}
+          />
+        </div>
+
+        {/* Icons */}
+        <div className="flex space-x-5 items-center text-gray-800">
+          <Link href="/track" className="hover:text-black text-xl" aria-label="Tracking Info">
+            <i className="fas fa-truck"></i>
+          </Link>
+          <Link href="/signup" className="hover:text-black text-xl" aria-label="Signup">
+            <i className="fas fa-user"></i>
+          </Link>
+          <Link href="/cart" className="relative hover:text-black text-2xl" aria-label="Cart">
+            <i className="fas fa-shopping-cart"></i>
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full px-1">
+              3
+            </span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Navigation Menu */}
+      <div className="w-full shadow-md" style={{ background: "linear-gradient(135deg, #00aaff, #003366)" }}>
+        <div className="flex px-4 py-3 justify-start space-x-4 flex-wrap">
+          {menuItems.map((item) => (
+            <div
+              key={item.label}
+              className="relative"
+              onMouseEnter={() => setActiveDropdown(item.label)}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <Link
+                href={item.link}
+                className="px-3 py-2 font-semibold rounded flex items-center cursor-pointer text-white hover:text-gray-300 transition-colors duration-200"
+              >
+                {item.label}
+              </Link>
+              {/* Dropdown */}
+              {activeDropdown === item.label && dropdownCategories[item.label] && (
+                <div
+                  className={`absolute top-full left-0 mt-2 bg-white text-black shadow-lg rounded-lg flex ${
+                    item.label === "MAKEUP" ? "p-6 flex-row min-w-[650px]" : "p-4 flex-wrap"
+                  } gap-6 w-max z-50`}
+                >
+                  {typeof dropdownCategories[item.label] === "object" &&
+                  !Array.isArray(dropdownCategories[item.label]) ? (
+                    Object.entries(dropdownCategories[item.label] as Record<string, { name: string; link: string }[]>).map(
+                      ([section, items]) => (
+                        <div key={section} className="w-[200px]">
+                          <h4 className="font-semibold mb-2">{section}</h4>
+                          <ul className="space-y-1 text-sm">
+                            {items.map((subItem, i) => (
+                              <li key={i} className="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer">
+                                <Link href={subItem.link} className="block">
+                                  {subItem.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <div className="w-[200px]">
+                      <ul className="space-y-1 text-sm">
+                        {(dropdownCategories[item.label] as { name: string; link: string }[]).map((subItem, i) => (
+                          <li key={i} className="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer">
+                            <Link href={subItem.link} className="block">
+                              {subItem.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Banner animation styles */}
+      <style jsx>{`
+        @keyframes slideInLeft {
+          0% {
+            transform: translateX(-100%);
+            opacity: 0;
+          }
+          100% {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        @keyframes slideInRight {
+          0% {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          100% {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        .animate-slideInLeft {
+          animation: slideInLeft 0.8s ease-in-out;
+        }
+        .animate-slideInRight {
+          animation: slideInRight 0.8s ease-in-out;
+        }
+      `}</style>
+    </div>
+  );
+}

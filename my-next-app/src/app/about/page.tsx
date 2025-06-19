@@ -1,187 +1,239 @@
-// pages/about.tsx
-'use client';
+"use client";
 
-import React from 'react';
-import Head from 'next/head';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { motion } from "framer-motion";
+import Image from "next/image";
+import React from "react";
 
-const About = () => {
+import {
+  FaFacebook,
+  FaInstagram,
+  FaTwitter,
+  FaYoutube,
+  FaLinkedin,
+  FaUsers,
+  FaLeaf,
+  FaStar,
+  FaLightbulb,
+  FaHeart,
+  FaChartLine,
+} from "react-icons/fa";
+
+const sectionVariants = {
+  hiddenLeft: { opacity: 0, x: -100 },
+  hiddenRight: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+};
+
+const iconVariants = {
+  hidden: { opacity: 0, y: -30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+};
+
+const Section = ({
+  children,
+  from = "left",
+}: {
+  children: React.ReactNode;
+  from?: "left" | "right";
+}) => (
+  <motion.section
+    initial={from === "left" ? "hiddenLeft" : "hiddenRight"}
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.3 }}
+    variants={sectionVariants}
+    className="max-w-7xl mx-auto px-4 py-16"
+  >
+    {children}
+  </motion.section>
+);
+
+const AboutPage = () => {
   return (
-    <>
-      <Head>
-        <title>About Us - Your Shop</title>
-        <meta
-          name="description"
-          content="Learn about our company, values, team, and mission at Your Shop."
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {/* Hero Section - Now Dark Blue */}
-      <motion.div
-        className="relative text-center text-white py-20 mb-12 bg-blue-900"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        <div className="relative z-10 px-4">
-          <h1 className="text-5xl font-bold mb-4 text-white">Our Story</h1>
-          <p className="text-xl max-w-3xl mx-auto text-blue-100">
-            Dedicated to providing quality products and exceptional customer service since 2010
+    <div className="bg-white text-gray-900">
+      {/* Who We Are */}
+      <Section from="right">
+        <motion.h2 className="text-4xl font-bold text-center mb-8 text-blue-800">
+          Who We Are
+        </motion.h2>
+        <div className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-16 md:justify-center">
+          {/* Text */}
+          <p className="text-lg max-w-xl text-center md:text-left">
+            At <span className="text-blue-500 font-semibold">GiigleMart</span>, we’re more than a marketplace — we’re a
+            movement. Passionate about quality and obsessed with customer satisfaction, our team is here to transform
+            your shopping into something delightful, simple, and sustainable.
           </p>
+
+          {/* Image */}
+          <div className="w-full max-w-xs relative aspect-square rounded-lg overflow-hidden shadow-md">
+            <Image
+              src="/whoweare.jpg" // 🔁 Replace with your image in /public
+              alt="Who We Are"
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
-      </motion.div>
+      </Section>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Our Story Section */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Who We Are</h2>
-          <div className="flex flex-wrap gap-8 items-center">
-            <div className="flex-1 min-w-[300px]">
-              <p className="mb-4">
-                Founded in 2010, Your Shop began with a simple mission: to provide high-quality products
-                at affordable prices while delivering exceptional customer service...
-              </p>
-              <p className="mb-4">
-                Our journey has been defined by a commitment to quality, innovation, and putting our
-                customers first...
-              </p>
-              <p>
-                As we've grown, our vision has remained the same: to create a shopping experience that
-                combines convenience with personal touch...
-              </p>
-            </div>
-            <div className="flex-1 min-w-[300px] h-[400px] relative rounded-lg overflow-hidden">
-              <Image
-                src="/about-story.jpg"
-                alt="Our story"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </motion.section>
+      {/* Our Values */}
+      <Section from="left">
+        <motion.h2 className="text-4xl font-bold text-center mb-12 text-blue-800">
+          Our Values
+        </motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+          {[
+            {
+              icon: <FaStar className="text-yellow-400 text-4xl" />,
+              title: "Quality",
+              desc: "Every product is tested and chosen to meet the highest standards.",
+            },
+            {
+              icon: <FaUsers className="text-blue-500 text-4xl" />,
+              title: "Customer First",
+              desc: "Our users come first — always. Fast support and friendly care.",
+            },
+            {
+              icon: <FaLeaf className="text-green-500 text-4xl" />,
+              title: "Sustainability",
+              desc: "We source and ship responsibly to care for our planet.",
+            },
+          ].map((val, idx) => (
+            <motion.div
+              key={idx}
+              variants={iconVariants}
+              initial="hidden"
+              whileInView="visible"
+              className="flex flex-col items-center gap-4"
+            >
+              {val.icon}
+              <h3 className="text-xl font-semibold">{val.title}</h3>
+              <p>{val.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </Section>
 
-        {/* Our Values Section - from LEFT */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Our Values</h2>
-          <div className="flex flex-wrap justify-center gap-8 mt-8">
-            {[
-              {
-                icon: '✨',
-                title: 'Quality',
-                desc: 'We never compromise on quality...'
-              },
-              {
-                icon: '👥',
-                title: 'Customer First',
-                desc: 'Your satisfaction is our priority...'
-              },
-              {
-                icon: '🌱',
-                title: 'Sustainability',
-                desc: 'We are dedicated to reducing our environmental impact...'
-              }
-            ].map((value, i) => (
-              <motion.div
-                key={i}
-                className="flex-1 min-w-[250px] max-w-[350px] p-8 bg-blue-50 rounded-lg text-center shadow-md cursor-pointer"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="text-4xl mb-4 text-blue-500">{value.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{value.title}</h3>
-                <p>{value.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+      {/* Our Impact */}
+      <Section from="right">
+        <motion.h2 className="text-4xl font-bold text-center mb-12 text-blue-800">
+          Our Impact
+        </motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+          {[
+            {
+              icon: <FaLightbulb className="text-yellow-500 text-4xl" />,
+              title: "Innovation",
+              desc: "Tech meets retail for a smart and smooth experience.",
+            },
+            {
+              icon: <FaHeart className="text-red-500 text-4xl" />,
+              title: "Community",
+              desc: "Giving back and building together with our customers.",
+            },
+            {
+              icon: <FaChartLine className="text-indigo-500 text-4xl" />,
+              title: "Growth",
+              desc: "We help customers and small businesses scale confidently.",
+            },
+          ].map((item, idx) => (
+            <motion.div
+              key={idx}
+              variants={iconVariants}
+              initial="hidden"
+              whileInView="visible"
+              className="flex flex-col items-center gap-4"
+            >
+              {item.icon}
+              <h3 className="text-xl font-semibold">{item.title}</h3>
+              <p>{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </Section>
 
-        {/* Meet Our Team Section - from RIGHT */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0, x: 100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Meet Our Team</h2>
-          <div className="flex flex-wrap justify-center gap-8">
-            {[
-              { name: 'Inayatullah Samoo', role: 'Founder & CEO', img: '/team/ceo.jpg' },
-              { name: 'Shehneela Khadim', role: 'Chief Technology Officer', img: '/team/cto.jpg' },
-              { name: 'Aqsa Khattak', role: 'Customer Service Manager', img: '/team/customer-service.jpg' }
-            ].map((member, i) => (
-              <motion.div
-                key={i}
-                className="flex-1 min-w-[250px] max-w-[300px] text-center cursor-pointer"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative w-[200px] h-[200px] mx-auto mb-4 rounded-full overflow-hidden border-4 border-blue-100">
-                  <Image src={member.img} alt={member.name} fill className="object-cover" />
-                </div>
-                <h3 className="text-xl font-bold text-blue-600">{member.name}</h3>
-                <p>{member.role}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+      {/* Meet Our Team */}
+      <Section from="right">
+        <motion.h2 className="text-4xl font-bold text-center mb-12 text-blue-800">
+          Meet Our Team
+        </motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+          {[
+            {
+              img: "ceo.jpg",
+              title: "CEO",
+              name: "Inayatullah Samoon",
+              desc: "Visionary leader driving GiigleMart forward with passion and innovation.",
+            },
+            {
+              img: "aqsa.jpg",
+              title: "CTO",
+              name: "Aqsa Ayub",
+              desc: "Technology strategist ensuring our platform is cutting-edge and secure.",
+            },
+            {
+              img: "shehneela.jpg",
+              title: "Product Manager",
+              name: "Shehneela Khadim",
+              desc: "Detail-oriented planner delivering features customers love.",
+            },
+          ].map((member, idx) => (
+            <motion.div
+              key={idx}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="p-6 bg-gray-100 rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out"
+            >
+              <div className="w-28 h-28 mx-auto relative mb-4">
+                <Image
+                  src={`/${member.img}`}
+                  alt={member.title}
+                  fill
+                  className="rounded-full object-cover border-2 border-blue-300 shadow-md"
+                />
+              </div>
+              <p className="italic text-gray-700">{member.desc}</p>
+              <p className="mt-2 font-semibold text-blue-600">{member.name}</p>
+              <p className="text-sm text-gray-500">{member.title}</p>
+            </motion.div>
+          ))}
+        </div>
+      </Section>
 
-        {/* Contact Section - from LEFT */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Get In Touch</h2>
-          <div className="flex flex-wrap gap-8">
-            {[
-              {
-                icon: '📍',
-                title: 'Location',
-                lines: ['123 Shopping Avenue', 'Commerce City, CA 90210']
-              },
-              {
-                icon: '📱',
-                title: 'Contact',
-                lines: ['Email: info@yourshop.com', 'Phone: (123) 456-7890']
-              },
-              {
-                icon: '⏰',
-                title: 'Hours',
-                lines: ['Online: 24/7', 'Support: Mon-Fri, 9AM-6PM']
-              }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                className="flex-1 min-w-[300px] p-8 bg-blue-50 rounded-lg shadow-md cursor-pointer"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="text-3xl mb-4 text-blue-500">{item.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                {item.lines.map((line, j) => (
-                  <p key={j}>{line}</p>
-                ))}
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-      </div>
-    </>
+      {/* Social Media Links */}
+      <Section from="left">
+        <motion.h2 className="text-4xl font-bold text-center mb-10 text-blue-800">
+          Connect With Us
+        </motion.h2>
+        <div className="flex justify-center gap-6">
+          {[
+            { icon: <FaFacebook />, color: "text-blue-600", href: "https://facebook.com" },
+            { icon: <FaInstagram />, color: "text-pink-500", href: "https://instagram.com" },
+            { icon: <FaTwitter />, color: "text-sky-400", href: "https://twitter.com" },
+            { icon: <FaYoutube />, color: "text-red-500", href: "https://youtube.com" },
+            { icon: <FaLinkedin />, color: "text-blue-700", href: "https://linkedin.com" },
+          ].map((social, idx) => (
+            <motion.a
+              key={idx}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.2 }}
+              className={`text-3xl ${social.color} transition duration-300`}
+            >
+              {social.icon}
+            </motion.a>
+          ))}
+        </div>
+      </Section>
+    </div>
   );
 };
 
-export default About;
+export default AboutPage;
